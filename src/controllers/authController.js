@@ -47,22 +47,35 @@ exports.login = (req, res) => {
         expiresIn: "1h",
       }
     );
-    // const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
-    // console.log(decoded)
 
     return res.json({ accessToken, message: "Logged in successfully" });
   });
 };
 
+exports.logOut = (req, res) => {
+  try {
+    // const token = req.header("Authorization").replace("Bearer ", "");
+    // token.destroy();
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({
+        message: "An error occurred during logout",
+        error: error.message,
+      });
+  }
+};
+
 exports.refreshToken = (req, res) => {
-  const token = req.header('Authorization').replace('Bearer ', '');
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const token = req.header("Authorization").replace("Bearer ", "");
+  const decoded = jwt.decode(token);
 
   const refreshToken = jwt.sign(
     { id: decoded.id, email: decoded.email },
     process.env.JWT_SECRET,
     {
-      expiresIn: '1h',
+      expiresIn: "1h",
     }
   );
   return res.json({ refreshToken });

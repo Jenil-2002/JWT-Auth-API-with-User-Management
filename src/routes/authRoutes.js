@@ -99,6 +99,22 @@ router.post(
 
 /**
  * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: Logout a user
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: User logged out successfully
+ *       401:
+ *         description: Unauthorized - Access token is missing or invalid
+ */
+
+router.post("/logout", authenticateToken, authController.logOut);
+
+
+/**
+ * @swagger
  * tags:
  *   name: Token
  *   description: Token related operations
